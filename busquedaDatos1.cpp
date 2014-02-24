@@ -143,6 +143,7 @@ void menuBusqueda()
 	}
 }
 
+//el proceso de busqueda aún no sirve
 void procesoBusqueda()
 {
 	/*Cuando el usuario ingrese a esta opción sera para generar la busqueda en base a:
