@@ -1,6 +1,6 @@
 /*
 	@autor: 		Khriz Enríquez
-	@nombreApp:		Pilas1
+	@nombreApp:		pilasColas
 	@descripción:	Se ingresarán datos para las pilas y colas, en base a eso se hace el push (en las pilas) 
 					y el pop (en las colas), aparte de mostrar los datos actuales dentro de la estructura.
 
