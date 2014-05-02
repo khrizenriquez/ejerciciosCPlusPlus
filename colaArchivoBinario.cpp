@@ -59,8 +59,17 @@ void cargandoDatos (){
 		/*primero obtengo la información del archivo, luego eso se lo cargo a mi estructura de datos.
 		La limitante que tengo es que mi estructura tiene una una capacidad maxima de 10 (es un arreglo de 10 posiciones)*/
 		while ( !feof( fArchivo ) ) {
-			printf("Mas de algo\n");
-			getch();
+			if ( top < 8 ) {
+				//printf( "%-15i%-15s\n", dArchivo[ bottom ].id, dArchivo[ bottom ].datos );
+				cout << dArchivo[ bottom ].id; cout << endl;
+				cout << dArchivo[ bottom ].datos;
+				printf("%i%s", dArchivo[ bottom ].id, dArchivo[ bottom ].datos);
+				fscanf( fArchivo, "%i%s", dArchivo[ bottom ].id, dArchivo[ bottom ].datos );
+				top++;
+				bottom++;
+			}else{
+				printf("Ya existen demasiados datos para ingresarlos a la estructura\n");
+			}
 		}
 		fclose( fArchivo );//como buen desarrollador cierro el archivo luego de usarlo
 		getch();
@@ -151,6 +160,28 @@ void menu (){
 	}else
 	if ( opciones == 4 ) {
 		/* La opción 4 guardará los datos que se encuentren en la estructura de datos a el archivo binario */
+		if ( top == -1 ){
+			printf("La cola en este momento se encuentra vacia, en 5 segundos \nregresaras al menu principal\n\n");
+			Sleep(5000);
+			menu();
+		}else{
+			/*si la cola no se encuentra vacía*/
+			if ( ( fArchivo = fopen( "colasArchivoBinario.dat", "ab+" ) ) == NULL ) {
+				/* Si entra acá es xq ocurrio un error inesperado */
+				printf("Te estan troleando y no quieren que abras la aplicacion.\n");
+			}else{
+				/*primero obtengo la información del archivo, luego eso se lo cargo a mi estructura de datos.
+				La limitante que tengo es que mi estructura tiene una una capacidad maxima de 10 (es un arreglo de 10 posiciones)*/
+				printf("\n\n");
+				for (int i = bottom; i <= top; i++ ) {
+					cout << (i + 1); cout << ". "; cout << dArchivo[ i ].id; cout << " | "; cout << dArchivo[ i ].datos; cout << endl;
+					fprintf( fArchivo, "%i %s\n", dArchivo[i].id, dArchivo[i].datos );
+				}
+				fclose( fArchivo );
+				printf("\n\n");
+			}
+		}
+		menu ();
 	}else
 	if ( opciones == 5 ) {
 		/* Saldrá de la aplicación */
@@ -166,7 +197,7 @@ void menu (){
 
 int main(int argc, char const *argv[])
 {
-	//cargandoDatos ();//primero cargo los datos del archivo binario a la estructura de datos
+	cargandoDatos ();//primero cargo los datos del archivo binario a la estructura de datos
 	menu ();//escucho las opciones que presione el usuario
 
 	getch();
