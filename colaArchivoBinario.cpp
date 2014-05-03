@@ -63,8 +63,8 @@ void cargandoDatos (){
 				//printf( "%-15i%-15s\n", dArchivo[ bottom ].id, dArchivo[ bottom ].datos );
 				cout << dArchivo[ bottom ].id; cout << endl;
 				cout << dArchivo[ bottom ].datos;
-				printf("%i%s", dArchivo[ bottom ].id, dArchivo[ bottom ].datos);
-				fscanf( fArchivo, "%i%s", dArchivo[ bottom ].id, dArchivo[ bottom ].datos );
+				printf("%i %s \n", dArchivo[ bottom ].id, dArchivo[ bottom ].datos);
+				fscanf( fArchivo, "%i %s \n", dArchivo[ bottom ].id, dArchivo[ bottom ].datos );
 				top++;
 				bottom++;
 			}else{
@@ -174,11 +174,10 @@ void menu (){
 				La limitante que tengo es que mi estructura tiene una una capacidad maxima de 10 (es un arreglo de 10 posiciones)*/
 				printf("\n\n");
 				for (int i = bottom; i <= top; i++ ) {
-					cout << (i + 1); cout << ". "; cout << dArchivo[ i ].id; cout << " | "; cout << dArchivo[ i ].datos; cout << endl;
 					fprintf( fArchivo, "%i %s\n", dArchivo[i].id, dArchivo[i].datos );
 				}
 				fclose( fArchivo );
-				printf("\n\n");
+				printf("Datos guardados en el archivo.\n\n");
 			}
 		}
 		menu ();
@@ -197,7 +196,7 @@ void menu (){
 
 int main(int argc, char const *argv[])
 {
-	cargandoDatos ();//primero cargo los datos del archivo binario a la estructura de datos
+	//cargandoDatos ();//primero cargo los datos del archivo binario a la estructura de datos
 	menu ();//escucho las opciones que presione el usuario
 
 	getch();
