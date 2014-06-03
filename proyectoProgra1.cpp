@@ -107,41 +107,126 @@ void agregandoOpcionMenuD() {
 }
 void editarOpcionMenuD(){
 	FILE *fMenuD;
-	if ( ( fMenuD = fopen( "menuDinamico.dat", "rb" ) ) == NULL ) {
+	int contador = 0, top = 20, opcionEditar;
+	char valorMenu[100];
+   /*	lo ideal es tener una estructura de tamaño indefinido*/
+	struct datosEditar {
+		char datosMenu[100];
+	} dEditar[ top ];
+
+	if ( ( fMenuD = fopen( "menuDinamico.dat", "rb+" ) ) == NULL ) {
 		printf("Algo extraño esta pasando, puede que te esten troleando :S\nO la radiacion no permite que uses esta aplicacion :(");
 		printf("\nPor esa razon no podras guardar opciones al menu dinamico\n\n");
 		Sleep( 5000 );
 		menuDinamico();
 	}else {
-		int contador = 0;
-		char nombreOpcion[100];
-		struct stMenuDinamico {
-			char nombreOpcion[100];
-		};
-		//stMenuDinamico stMenuD[];
-		printf("Las opciones que tienes son: \n\n");
+		printf("Estos son los valores que tienes en el menu\n");
 		while( !feof( fMenuD ) ) {
 			contador++;
-			stMenuDinamico stMenuD[ contador ];
-			fscanf( fMenuD, "%s", stMenuD[contador].nombreOpcion );
+			if ( contador < top ) {
+				fscanf( fMenuD, "%s \n", dEditar[ contador ].datosMenu );
+				printf( "%i %s \n",  contador , dEditar[ contador ].datosMenu );
+			}
 		}
+	}
+	//para cerrar el archivo
+	fclose( fMenuD );
 
-		printf("%i en total\n", contador);
-		//printf("%s valor del arreglo\n", stMenuD[ 2 ].nombreOpcion);
-		/*struct stMenuDinamico {
-			char nombreOpcion[100];
-		}stMenuD[ contador ];
-		for ( int i = 0; i < contador; ++i ) {
-			fscanf( fMenuD, "%s", stMenuD[ i ].nombreOpcion );
-			printf("%i. %s \n", i, stMenuD[ i ].nombreOpcion);
-		}*/
+   /*	en esta parte pregunto que opcion desea eliminar el usaurio*/
+	printf("\n\nQue numero de opcion deseas editar? ");
+	cin >> opcionEditar;
+	printf("Cual sera el nuevo valor de esta opcion del menu? ");
+	cin >> valorMenu;
+
+	if ( opcionEditar >= top || opcionEditar <= 0 ) {
+		printf("Lo siento pero el valor que ingresaste en el menu no es valido.\n");
+		editarOpcionMenuD();
+	}else
+	if ( opcionEditar > contador ) {
+		printf("El valor que ingresaste no aparece en el menu de opciones que se te muestran :(\n");
+		editarOpcionMenuD();
+	}else {
+		if ( ( fMenuD = fopen( "menuDinamico.dat", "wb+" ) ) == NULL ) {
+			printf("Algo extraño esta pasando, puede que te esten troleando :S\nO la radiacion no permite que uses esta aplicacion :(");
+			printf("\nPor esa razon no podras guardar opciones al menu dinamico\n\n");
+			Sleep( 5000 );
+			menuDinamico();
+		}else {
+			for ( int i = 1; i <= contador; i++ ) {
+			   /* 		si el valor que estoy leyendo en la iteración es diferente al que escribio el usuario proceso a eliminarlo*/
+				if ( i == opcionEditar ) {
+					fprintf( fMenuD, "%s \n", valorMenu );
+				}else{
+					fprintf( fMenuD, "%s \n", dEditar[ i ].datosMenu );
+				}
+			}
+			printf("\n\nSe ha cambiado con exito el nombre :)\n\n");
+		}
 	}
 	//para cerrar el archivo
 	fclose( fMenuD );
 	printf("\n\n");
 	menuDinamico();
 }
-void eliminandoOpcionMenuD(){}
+void eliminandoOpcionMenuD(){
+	FILE *fMenuD;
+	int contador = 0, top = 20;
+	int opcionEliminar;
+   /*	lo ideal es tener una estructura de tamaño indefinido*/
+	struct datosEditar {
+		char datosMenu[100];
+	} dEditar[ top ];
+
+	if ( ( fMenuD = fopen( "menuDinamico.dat", "rb+" ) ) == NULL ) {
+		printf("Algo extraño esta pasando, puede que te esten troleando :S\nO la radiacion no permite que uses esta aplicacion :(");
+		printf("\nPor esa razon no podras guardar opciones al menu dinamico\n\n");
+		Sleep( 5000 );
+		menuDinamico();
+	}else {
+		printf("Estos son los valores que tienes en el menu\n");
+		while( !feof( fMenuD ) ) {
+			contador++;
+			if ( contador < top ) {
+				fscanf( fMenuD, "%s \n", dEditar[ contador ].datosMenu );
+				printf( "%i %s \n",  contador , dEditar[ contador ].datosMenu );
+			}
+		}
+	}
+	//para cerrar el archivo
+	fclose( fMenuD );
+
+   /*	en esta parte pregunto que opcion desea eliminar el usaurio*/
+	printf("\n\nQue numero de opcion deseas eliminar? ");
+	cin >> opcionEliminar;
+
+	if ( opcionEliminar >= top || opcionEliminar <= 0 ) {
+		printf("Lo siento pero el valor que ingresaste en el menu no es valido.\n");
+		editarOpcionMenuD();
+	}else
+	if ( opcionEliminar > contador ) {
+		printf("El valor que ingresaste no aparece en el menu de opciones que se te muestran :(\n");
+		editarOpcionMenuD();
+	}else {
+		if ( ( fMenuD = fopen( "menuDinamico.dat", "wb+" ) ) == NULL ) {
+			printf("Algo extraño esta pasando, puede que te esten troleando :S\nO la radiacion no permite que uses esta aplicacion :(");
+			printf("\nPor esa razon no podras guardar opciones al menu dinamico\n\n");
+			Sleep( 5000 );
+			menuDinamico();
+		}else {
+			for ( int i = 1; i <= contador; i++ ) {
+				/* 	si el valor que estoy leyendo en la iteración es diferente al que escribio el usuario proceso a eliminarlo*/
+				if ( i != opcionEliminar ) {
+					fprintf( fMenuD, "%s \n", dEditar[ i ].datosMenu );
+				}
+			}
+			printf("\n\nSe ha eliminado con exito :)\n\n");
+		}
+	}
+	//para cerrar el archivo
+	fclose( fMenuD );
+	printf("\n\n");
+	menuDinamico();
+}
 void viendoOpcionMenuD(){
 	FILE *fMenuD;
 
@@ -157,7 +242,7 @@ void viendoOpcionMenuD(){
 		printf("Las opciones que tienes son: \n\n");
 		while( !feof( fMenuD ) ) {
 			contador++;
-			fscanf( fMenuD, "%s", nombreOpcion );
+			fscanf( fMenuD, "%s ", nombreOpcion );
 			printf("%i. %s \n", contador, nombreOpcion);
 		}
 	}
@@ -200,8 +285,21 @@ void menuDinamico(){
 	}
 }
 
-
 /*	Menú de opciones predeterminadas*/
+
+/*	procedimientos y funciones para el menu de opciones predeterminadas*/
+int fibonacci( int n ) {
+	/*	fuente: http://programavideojuegos.blogspot.com/2013/05/sucesion-de-fibonacci-en-c.html*/
+	if ( n > 2 )
+		return fibonacci( n - 1 ) + fibonacci( n - 2 );
+	else if ( n == 2 )
+		return 1;
+	else if ( n == 1 )
+		return 1;
+	else if ( n == 0 )
+		return 0;
+}
+
 void menuPredeterminado(){
 	int opcionMenuP;
 
@@ -222,15 +320,64 @@ void menuPredeterminado(){
 	if ( opcionMenuP == 2 ){
 	}else
 	if ( opcionMenuP == 3 ){
+		system( "cls" );
+
+		/*	fuente: http://programavideojuegos.blogspot.com/2013/05/sucesion-de-fibonacci-en-c.html*/
+		printf("%s para este ejemplo de recursividad se trabajara con la serie fibonacci\n\n");
+		printf("La sucesion de Fibonacci es una sucesion infinita de numeros en los que cada uno de ellos es el resultado de la suma de sus dos inmediatamente anteriores. La sucesion comienza tal que asi: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987..., estos son los numeros iterando hasta 20 veces:\n\n\n", nombreUsuario);
+		Sleep( 2000 );
+		int num;
+		for ( num=0; num<=20; num++ ) {
+			printf("%d   ", fibonacci(num) );
+		}
+		printf("\n\n");
+		menuPredeterminado();
 	}else
 	if ( opcionMenuP == 4 ){
+		system( "cls" );
+
+		printf("Hey %s, te cuento que para el ejemplo de archivos secuenciales se creara o sobre escribira un archivo con los datos de un texto Lorem para efecto de este ejemplo, luego de crearce el archivo se guardaran de un texto Lorem en el y de manera imediata se leeran y mostraran en pantalla.\n", nombreUsuario );
+		FILE *fArchivoSecuencial;
+		if ( ( fArchivoSecuencial =  fopen( "fArchivoSecuencial.dat", "wb+" ) ) == NULL ) {
+			printf("Algo extraño esta pasando, puede que te esten troleando :S\nO la radiacion no permite que uses esta aplicacion :(");
+			printf("\nPor esa razon no podras guardar opciones al menu dinamico\n\n");
+			Sleep( 5000 );
+			menuPredeterminado();
+		}else{
+			/*for ( int i = 0; i <= 50; i++ ) {
+				fprintf( fArchivoSecuencial, "%i \n", i );
+			}*/
+			fprintf( fArchivoSecuencial, "%s \n", "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, recusandae nam magnam quam nihil eius soluta quae expedita illo accusamus commodi explicabo sapiente sit deleniti labore fugiat natus inventore laboriosam." );
+			printf("\n\n");
+			fclose( fArchivoSecuencial );
+			printf("\n\n\nDatos guardados correctamente :).\n\n\n");
+		}
+		printf("Los datos guardados son: \n");
+
+		if ( ( fArchivoSecuencial = fopen( "fArchivoSecuencial.dat", "rb+" ) ) == NULL ) {
+			printf("Algo extraño esta pasando, puede que te esten troleando :S\nO la radiacion no permite que uses esta aplicacion :(");
+			printf("\nPor esa razon no podras guardar opciones al menu dinamico\n\n");
+			Sleep( 5000 );
+			menuPredeterminado();
+		}else{
+			char datosArchivoSec[50];
+			printf("Chuta\n");
+			while( !feof( fArchivoSecuencial ) ) {
+				fscanf( fArchivoSecuencial, "%s \n", datosArchivoSec );
+				printf("%s ", datosArchivoSec );
+			}
+		}
+		printf("\n\n");
+		fclose( fArchivoSecuencial );
+		printf("\n\n\nDatos mostrados correctamente :).\n\n\n");
+		menuPredeterminado();
 	}else
 	if ( opcionMenuP == 5 ){
 	}else
 	if ( opcionMenuP == 6 ){
-		menuDeOpciones();
+		menuPredeterminado();
 	}else{
-		menuDeOpciones();
+		menuPredeterminado();
 	}
 }
 
@@ -262,6 +409,7 @@ void menuDeOpciones() {
 	}else
 	if ( opcionMenuPrimario == 4 ) {
 		printf("Espara un momento, estamos asesinando todo\n");
+		printf("hasta luego %s\n", nombreUsuario);
 		for ( int i = 0; i <= 20; i++ ) {
 			Sleep(200);
 			printf(".");
